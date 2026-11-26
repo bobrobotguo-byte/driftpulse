@@ -313,6 +313,42 @@ input, select, textarea {
 
 .hidden { display: none !important; }
 
+.brand-link {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.preset-note {
+  margin: 10px 0 0;
+  font-size: 0.8rem;
+}
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 24px 0 40px;
+  font-size: 0.84rem;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.footer-links a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.legal-doc {
+  padding: 28px 20px 48px;
+}
+
 @media (max-width: 640px) {
   .privacy-pill { display: none; }
 }

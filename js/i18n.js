@@ -48,7 +48,13 @@ export const I18N = {
     csvModalHint: '支持表头：Account, Ticker, Shares, Price（或中文 账户, 代码, 持仓数量）',
     csvApplyBtn: '解析并导入',
     cancelBtn: '取消',
-    weightError: '目标配比之和必须为 100%（当前为 {sum}%），请调整或点击“目标权重归一化”。'
+    weightError: '目标配比之和必须为 100%（当前为 {sum}%），请调整或点击“目标权重归一化”。',
+    presetNote: '注：以上预设组合仅作软件功能演示与公开教学示例，不构成任何投资建议。',
+    footerDisclaimer: '免责声明：DriftPulse 仅为纯数学计算与表格替代工具，不提供任何投资、税务或法律建议，不代客下单且不托管资金。',
+    footerTerms: '服务条款',
+    footerPrivacy: '隐私政策',
+    footerRefund: '14天退款政策',
+    footerContact: '联系支持：bobrobotguo@gmail.com'
   },
   en: {
     privacyBadge: '100% Client-Side · Zero Brokerage Credentials',
@@ -99,6 +105,12 @@ export const I18N = {
     csvModalHint: 'Supported columns: Account, Ticker, Shares, Price',
     csvApplyBtn: 'Parse & Import',
     cancelBtn: 'Cancel',
-    weightError: 'Target weights must sum to 100% (currently {sum}%). Click Normalize to fix.'
+    weightError: 'Target weights must sum to 100% (currently {sum}%). Click Normalize to fix.',
+    presetNote: 'Note: Preset portfolios are educational examples for software demonstration only, not investment advice.',
+    footerDisclaimer: 'Disclaimer: DriftPulse is a mathematical calculator & spreadsheet-replacement tool only. Not financial, investment, or tax advice.',
+    footerTerms: 'Terms of Service',
+    footerPrivacy: 'Privacy Policy',
+    footerRefund: '14-Day Refund Policy',
+    footerContact: 'Support: bobrobotguo@gmail.com'
   }
 };
