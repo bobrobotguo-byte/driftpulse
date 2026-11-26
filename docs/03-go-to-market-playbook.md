@@ -1,7 +1,7 @@
 # DriftPulse 30 天冷启动与推广物料包
 
 ## 1. 30 天冷启动节奏
-- **Week 1（上线与种子用户）**：部署上线，在 Reddit `r/Bogleheads`、`r/ETFs` 与雪球/V2EX 发布“免费跨账户 Buy-Only 再平衡工具”实测贴，收集前 20 位种子用户反馈。
+- **Week 1（上线与种子用户）**：已部署上线至 `https://victorswindrose321.uk`，在 Reddit `r/Bogleheads`、`r/ETFs` 与雪球/V2EX 发布“免费跨账户 Buy-Only 再平衡工具”实测贴，收集前 20 位种子用户反馈。
 - **Week 2（内容裂变）**：在 X (Twitter) 发布“为什么只买不卖能帮你省下 15% 税务摩擦”图文 Thread，附带经典三基金组合回撤对比截图。
 - **Week 3（Product Hunt 发布）**：提交 Product Hunt，配合 Maker First Comment 讲述“不想把券商密码交给第三方工具”的痛点故事。
 - **Week 4（SEO 与转化优化）**：针对 `ETF rebalancing calculator`、`Bogleheads portfolio drawdown` 等长尾词优化着陆页文案，上线 Pro 年付优惠。
