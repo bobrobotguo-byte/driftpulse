@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DriftPulse — 跨账户 ETF 再平衡与回撤诊断</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <div class="brand">
+        <span class="brand-dot"></span>
+        <span class="brand-name">DriftPulse</span>
+      </div>
+      <div class="topbar-actions">
+        <span class="privacy-pill" data-i18n="privacyBadge">100% 浏览器本地计算 · 零券商密码风险</span>
+        <button id="langToggle" class="btn btn-ghost" type="button">EN / 中文</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1 data-i18n="heroTitle">跨账户 ETF 再平衡与回撤诊断</h1>
+      <p class="hero-sub" data-i18n="heroSubtitle"></p>
+      <div class="presets-bar">
+        <span class="muted" data-i18n="presetsLabel">快速体验预设组合：</span>
+        <div id="presetButtons" class="preset-btns"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <h2 data-i18n="holdingsTitle">1. 跨账户持仓与目标配比</h2>
+        <div class="btn-group">
+          <button id="openCsvBtn" class="btn btn-secondary" type="button" data-i18n="importCsvBtn">导入 CSV</button>
+          <button id="addRowBtn" class="btn btn-secondary" type="button" data-i18n="addRowBtn">+ 添加持仓</button>
+          <button id="normalizeBtn" class="btn btn-ghost" type="button" data-i18n="normalizeBtn">目标权重归一化</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th data-i18n="colAccount">券商账户</th>
+              <th data-i18n="colType">税务属性</th>
+              <th data-i18n="colTicker">ETF 代码</th>
+              <th data-i18n="colShares">持有股数</th>
+              <th data-i18n="colValue">当前市值</th>
+              <th data-i18n="colTarget">目标配比 (%)</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="holdingsBody"></tbody>
+        </table>
+      </div>
+      <div id="weightAlert" class="alert hidden"></div>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <h2 data-i18n="rebalanceTitle">2. 再平衡执行指令</h2>
+        <button id="copyMdBtn" class="btn btn-secondary" type="button" data-i18n="copyMdBtn">复制 Markdown 指令</button>
+      </div>
+      <div class="controls-grid">
+        <label class="field">
+          <span data-i18n="newCashLabel">本次新入金 (USD)</span>
+          <input id="newCashInput" type="number" min="0" step="100" value="2500" />
+        </label>
+        <div class="field">
+          <span data-i18n="modeBuyOnly">再平衡模式</span>
+          <div class="segmented">
+            <button id="modeBuyOnlyBtn" type="button" class="seg-btn active" data-i18n="modeBuyOnly">只买不卖（省税模式）</button>
+            <button id="modeFullBtn" type="button" class="seg-btn" data-i18n="modeFull">全量再平衡（含卖出）</button>
+          </div>
+        </div>
+        <label class="field">
+          <span data-i18n="thresholdLabel">漂移阈值 (%)</span>
+          <input id="thresholdInput" type="number" min="0" max="20" step="0.5" value="2" />
+        </label>
+        <label class="field checkbox-field">
+          <input id="wholeSharesInput" type="checkbox" />
+          <span data-i18n="wholeSharesLabel">仅买整股</span>
+        </label>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th data-i18n="colTicker">ETF 代码</th>
+              <th data-i18n="colAction">操作</th>
+              <th data-i18n="colAmount">金额 (USD)</th>
+              <th data-i18n="colActionShares">股数</th>
+              <th data-i18n="colDrift">当前偏离</th>
+              <th data-i18n="colProjected">执行后占比</th>
+            </tr>
+          </thead>
+          <tbody id="rebalanceBody"></tbody>
+        </table>
+      </div>
+      <div id="rebalanceSummary" class="summary-bar"></div>
+    </section>
+
+    <section class="card">
+      <div class="card-head">
+        <h2 data-i18n="diagTitle">3. 历史回撤与风险诊断 (2020–2026)</h2>
+      </div>
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <span class="kpi-label" data-i18n="kpiCagr">年化复合收益 (CAGR)</span>
+          <strong id="kpiCagr" class="kpi-val">--</strong>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label" data-i18n="kpiMdd">最大回撤 (Max Drawdown)</span>
+          <strong id="kpiMdd" class="kpi-val neg">--</strong>
+          <small id="kpiMddRange" class="muted"></small>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label" data-i18n="kpiSharpe">夏普比率 (Sharpe)</span>
+          <strong id="kpiSharpe" class="kpi-val">--</strong>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label" data-i18n="kpiEr">加权综合费率</span>
+          <strong id="kpiEr" class="kpi-val">--</strong>
+        </div>
+      </div>
+
+      <div class="charts-grid">
+        <div class="chart-box">
+          <h3 data-i18n="chartNavTitle">历史净值增长曲线 (初始 $100)</h3>
+          <div id="navChart"></div>
+        </div>
+        <div class="chart-box">
+          <h3 data-i18n="chartDdTitle">水下回撤曲线 (Underwater Drawdown %)</h3>
+          <div id="ddChart"></div>
+        </div>
+      </div>
+
+      <div class="chart-box corr-box">
+        <h3 data-i18n="chartCorrTitle">ETF 相关性矩阵</h3>
+        <div id="corrMatrix"></div>
+      </div>
+    </section>
+
+    <section class="pricing-section">
+      <h2 data-i18n="pricingTitle">简单透明的定价</h2>
+      <div class="pricing-grid">
+        <div class="card price-card">
+          <h3 data-i18n="freeTitle">Free 免费版</h3>
+          <div class="price-tag" data-i18n="freePrice">$0</div>
+          <p class="muted" data-i18n="freeDesc"></p>
+        </div>
+        <div class="card price-card pro">
+          <h3 data-i18n="proTitle">Pro 专业版</h3>
+          <div class="price-tag" data-i18n="proPrice">$9 / 月 · $79 / 年</div>
+          <p class="muted" data-i18n="proDesc"></p>
+          <button id="proUpgradeBtn" class="btn btn-primary" type="button" data-i18n="proBtn">升级 Pro（支持 Creem 美元/支付宝）</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="csvModal" class="modal hidden">
+    <div class="modal-card">
+      <h3 data-i18n="csvModalTitle">粘贴券商持仓 CSV</h3>
+      <p class="muted" data-i18n="csvModalHint"></p>
+      <textarea id="csvTextarea" rows="7" placeholder="Account,Account Type,Ticker,Shares&#10;IBKR,Taxable,VTI,40&#10;Schwab,Tax-Advantaged,BND,60"></textarea>
+      <div class="modal-actions">
+        <button id="csvCancelBtn" class="btn btn-ghost" type="button" data-i18n="cancelBtn">取消</button>
+        <button id="csvApplyBtn" class="btn btn-primary" type="button" data-i18n="csvApplyBtn">解析并导入</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>
