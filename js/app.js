@@ -182,12 +182,18 @@ function renderRebalance() {
   els.rebalanceBody.innerHTML = result.rows
     .map((r) => {
       const badgeCls = r.action === 'BUY' ? 'badge-buy' : r.action === 'SELL' ? 'badge-sell' : 'badge-hold';
+      const actionLabel =
+        r.action === 'BUY'
+          ? (state.lang === 'zh' ? '低配 (+)' : 'Underweight (+)')
+          : r.action === 'SELL'
+            ? (state.lang === 'zh' ? '超配 (-)' : 'Overweight (-)')
+            : (state.lang === 'zh' ? '平衡' : 'Balanced');
       const warnHtml = r.taxWarning ? `<span class="badge badge-warn" title="${t('taxWarningTip')}">Tax!</span>` : '';
       const driftSign = r.driftPct > 0 ? '+' : '';
       return `
         <tr>
           <td><strong>${r.ticker}</strong></td>
-          <td><span class="badge ${badgeCls}">${r.action}</span>${warnHtml}</td>
+          <td><span class="badge ${badgeCls}">${actionLabel}</span>${warnHtml}</td>
           <td>$${r.actionAmount.toFixed(2)}</td>
           <td>${r.actionShares}</td>
           <td class="${Math.abs(r.driftPct) >= state.driftThresholdPct ? 'neg' : 'muted'}">${driftSign}${r.driftPct.toFixed(2)}%</td>
@@ -199,8 +205,8 @@ function renderRebalance() {
 
   els.rebalanceSummary.textContent =
     state.lang === 'zh'
-      ? `当前总市值：$${result.totalValue.toLocaleString('en-US', { maximumFractionDigits: 0 })} ｜ 计划买入：$${result.totalAllocatedBuy.toFixed(2)} ｜ 计划卖出：$${result.totalAllocatedSell.toFixed(2)} ｜ 剩余现金：$${result.leftoverCash.toFixed(2)}`
-      : `Current Value: $${result.totalValue.toLocaleString('en-US', { maximumFractionDigits: 0 })} | Buy: $${result.totalAllocatedBuy.toFixed(2)} | Sell: $${result.totalAllocatedSell.toFixed(2)} | Leftover Cash: $${result.leftoverCash.toFixed(2)}`;
+      ? `当前总市值：$${result.totalValue.toLocaleString('en-US', { maximumFractionDigits: 0 })} ｜ 增量分配：+$${result.totalAllocatedBuy.toFixed(2)} ｜ 减量差额：-$${result.totalAllocatedSell.toFixed(2)} ｜ 剩余现金：$${result.leftoverCash.toFixed(2)}`
+      : `Current Value: $${result.totalValue.toLocaleString('en-US', { maximumFractionDigits: 0 })} | +Delta: $${result.totalAllocatedBuy.toFixed(2)} | -Delta: $${result.totalAllocatedSell.toFixed(2)} | Leftover Cash: $${result.leftoverCash.toFixed(2)}`;
 }
 
 function renderDiagnostics() {
@@ -327,14 +333,11 @@ els.copyMdBtn.addEventListener('click', async () => {
 });
 
 els.proUpgradeBtn.addEventListener('click', () => {
-  if (CONFIG.pricing.creemMonthlyUrl) {
-    window.open(CONFIG.pricing.creemMonthlyUrl, '_blank', 'noopener');
+  const targetUrl = CONFIG.pricing.stripeMonthlyUrl || CONFIG.pricing.templateOrSupportUrl;
+  if (targetUrl) {
+    window.open(targetUrl, '_blank', 'noopener');
   } else {
-    alert(
-      state.lang === 'zh'
-        ? '尚未配置 Creem Checkout 链接：请按 docs/04-account-and-launch-checklist.md 开立 Creem 账号并填入 web/js/config.js。'
-        : 'Creem Checkout URL not configured yet. See docs/04-account-and-launch-checklist.md.'
-    );
+    window.location.href = `mailto:${CONFIG.supportEmail}?subject=${encodeURIComponent('DriftPulse Pro / Offline Pack Inquiry')}`;
   }
 });
 

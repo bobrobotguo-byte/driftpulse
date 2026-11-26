@@ -1,14 +1,17 @@
 export const CONFIG = {
   brandName: 'DriftPulse',
-  brandTaglineZh: '跨账户 ETF 再平衡与回撤诊断',
-  brandTaglineEn: 'Cross-Account ETF Rebalancer & Drawdown Diagnostics',
+  brandTaglineZh: '跨账户 ETF 权重偏离与回撤计算器',
+  brandTaglineEn: 'Cross-Account ETF Drift & Drawdown Calculator',
   pricing: {
     monthlyUsd: 9,
     annualUsd: 79,
-    // 开立 Creem 账号后，将此处替换为真实 Checkout URL
-    creemMonthlyUrl: 'https://www.creem.io/product/prod_3UDrr8MlanAfhr4GL8Loqn',
-    creemAnnualUrl: 'https://www.creem.io/product/prod_73ZQvmIdjijQJh4Ra0sVER'
+    // 后续接通 Stripe Payment Link 后填入此处即可一键切换为 Stripe 订阅收款
+    stripeMonthlyUrl: '',
+    stripeAnnualUrl: '',
+    // 可选：Ko-fi / Gumroad 离线模板或赞赏链接
+    templateOrSupportUrl: ''
   },
+  supportEmail: 'bobrobotguo@gmail.com',
   riskFreeRateAnnual: 0.04,
   storageKey: 'driftpulse_state_v1'
 };
